@@ -136,11 +136,6 @@ This project is divided into 4 phases:
 
 ---
 
-## 📚 Credits
-
-This project is built with guidance from the **Financial Data Parser Project Document** and inspired by work from contributors at GIKI.
-
----
 
 ## 🤝 Contributing
 
@@ -150,5 +145,5 @@ Found a bug or improvement idea? Feel free to fork and submit a pull request!
 
 ## 📬 Contact
 
-Maintained by [Bilal Aslam](mailto:your_email@example.com)  
+Maintained by [Bilal Aslam](mailto:bilal.aslam.338658@gmail.com)  
 Feel free to reach out for collaboration or questions.
