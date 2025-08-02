@@ -1,62 +1,91 @@
-# 📊 Financial Data Parser – Phase 1
+# 📊 Financial Data Parser – Complete Project (Phases 1 to 4)
 
-This project is part of a multi-phase system designed to parse and process financial data from Excel spreadsheets. In **Phase 1**, we focus on:
+This is a complete 4-phase project that parses financial Excel files to extract, clean, classify, and store structured tabular data.
 
-- Reading Excel files (even with multiple sheets)
-- Extracting and displaying structured metadata
-- Laying the foundation for more intelligent parsing in later stages
+The project is modular, scalable, and supports:
+- 📁 Loading multi-sheet Excel files  
+- 🧠 Auto-detecting column types (dates, numbers, strings)  
+- 🔎 Parsing amounts and dates into clean formats  
+- 💾 Storing cleaned datasets for querying and aggregation
 
 ---
 
-## 📁 Project Structure
+## 🚦 Project Phases
+
+| Phase | Feature                                                  | Status |
+|-------|----------------------------------------------------------|--------|
+| 1     | Excel loading + metadata extraction                      | ✅ Done |
+| 2     | Data type detection (date, number, string, empty)        | ✅ Done |
+| 3     | Format parsing (amounts, Excel serials, Q1 2024, etc.)   | ✅ Done |
+| 4     | Storage & querying (range filter, grouping, aggregation) | ✅ Done |
+
+---
+
+## 📁 Folder Structure
 
 ```
 financial-data-parser/
 ├── data/
-│   └── sample/                         # Sample Excel files
+│   └── sample/
 │       ├── KH_Bank.XLSX
 │       └── Customer_Ledger_Entries_FULL.xlsx
+├── scripts/
+│   └── main.py
 ├── src/
 │   └── core/
 │       ├── __init__.py
-│       └── excel_processor.py         # Class that handles Excel parsing
-├── scripts/
-│   └── main.py                        # Script to run Phase 1
-├── tests/                             # (Empty for now – used in later phases)
-├── requirements.txt                   # Python dependencies
+│       ├── excel_processor.py      # Phase 1
+│       ├── type_detector.py        # Phase 2
+│       ├── format_parser.py        # Phase 3
+│       └── data_storage.py         # Phase 4
+├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## 🎯 Phase 1 Objectives
+## 🧠 How It Works
 
-| Feature                          | Status |
-|----------------------------------|--------|
-| Load multiple Excel files        | ✅     |
-| Handle multiple sheets           | ✅     |
-| Display sheet names              | ✅     |
-| Display number of rows/columns   | ✅     |
-| Display column headers           | ✅     |
+### 🔹 Phase 1 – ExcelProcessor
+
+Reads Excel files and extracts:
+- Sheet names
+- Rows × columns
+- Column headers
+
+> 📄 File: `src/core/excel_processor.py`
 
 ---
 
-## 🧠 How It Works
+### 🔹 Phase 2 – DataTypeDetector
 
-### `ExcelProcessor` (in `src/core/excel_processor.py`)
+For each column, detects if it contains:
+- 📅 Dates
+- 💰 Numbers
+- 🔤 Strings
+- ⛔ Empty (null)
 
-This class provides methods to:
+> 📄 File: `src/core/type_detector.py`
 
-- Load Excel files using `pandas.ExcelFile`
-- Extract sheet names
-- Get the shape (rows × columns) of each sheet
-- List all column headers
+---
 
-### `main.py` (in `scripts/main.py`)
+### 🔹 Phase 3 – FormatParser
 
-Runs the processor on two provided Excel files:
-- `KH_Bank.XLSX`
-- `Customer_Ledger_Entries_FULL.xlsx`
+Normalizes data using:
+- Amount parsing (`$1,234.56`, `1.2M`, `₹1,23,456`, `(2,000)`)
+- Date parsing (`12/31/2023`, `Q1 2024`, `44927`)
+
+> 📄 File: `src/core/format_parser.py`
+
+---
+
+### 🔹 Phase 4 – FinancialDataStore
+
+Stores parsed data and enables:
+- Range queries (e.g., `Amount` between 1K–10K)
+- Grouping and aggregation (e.g., `sum(Amount)` by `Customer Name`)
+
+> 📄 File: `src/core/data_storage.py`
 
 ---
 
@@ -66,15 +95,24 @@ Runs the processor on two provided Excel files:
 [✓] Loaded: data/sample/KH_Bank.XLSX
 [✓] Loaded: data/sample/Customer_Ledger_Entries_FULL.xlsx
 
-📄 File: data/sample/KH_Bank.XLSX
-  🗂️ Sheet: Sheet1
-     → Rows: 1221, Columns: 56
-     → Columns: ['GroupHeader.MessageIdentification', ..., 'AdditionalTransactionInformation']
+📄 File: KH_Bank.XLSX | Sheet1
+  → Statement.CreationDateTime → number
+  → Statement.Entry.BookingDate.Date → number
+  → Statement.Entry.Amount.Value → number
 
-📄 File: data/sample/Customer_Ledger_Entries_FULL.xlsx
-  🗂️ Sheet: Customer Ledger Entries
-     → Rows: 5505, Columns: 44
-     → Columns: ['Posting Date', 'VAT Date', ..., 'Document Subtype']
+📄 File: Customer_Ledger_Entries_FULL.xlsx | Customer Ledger Entries
+  → Posting Date → date
+  → Amount → number
+  → Customer Name → string
+
+🔍 Sample Range Query:
+Dataset: Customer_Ledger_Entries_FULL.xlsx | Customer Ledger Entries
+Rows: 1071 in Amount range 1K–10K
+
+📊 Sample Aggregation:
+Customer Name
+Bonafarm-Bábolna Takarmány Kft.    1.4B
+Agrifirm Magyarország Zrt.         883M
 ```
 
 ---
@@ -83,15 +121,11 @@ Runs the processor on two provided Excel files:
 
 ### 1. Install Requirements
 
-Make sure Python 3.10+ is installed.
-
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Place Data
-
-Put the Excel files inside this folder:
+### 2. Place Excel Files
 
 ```
 data/sample/
@@ -99,13 +133,13 @@ data/sample/
 └── Customer_Ledger_Entries_FULL.xlsx
 ```
 
-### 3. Run the Project
+### 3. Run the Script
 
 ```bash
 python scripts/main.py
 ```
 
-If you face a module import error, run with:
+✅ If import error occurs, use:
 
 ```bash
 $env:PYTHONPATH="."
@@ -116,34 +150,45 @@ python scripts/main.py
 
 ## 📦 Dependencies
 
-- `pandas` – Excel file reading and DataFrame operations
-- `openpyxl` – Engine for `.xlsx` file compatibility
+- `pandas` – Excel and data operations
+- `openpyxl` – `.xlsx` reading support
+- `python-dateutil` – Flexible date parsing
+- `re` – Regex for format detection
 
-Listed in `requirements.txt`.
-
----
-
-## 📌 Next Phases (Planned)
-
-This project is divided into 4 phases:
-
-| Phase | Description                                         |
-|-------|-----------------------------------------------------|
-| 1     | ✅ Excel metadata extraction                         |
-| 2     | 🔜 Data type detection (dates, numbers, strings)     |
-| 3     | 🔜 Format parsing (amounts, dates, currencies)       |
-| 4     | 🔜 Optimized data storage & querying                 |
+All are listed in `requirements.txt`.
 
 ---
 
+## ✨ Features at a Glance
 
-## 🤝 Contributing
-
-Found a bug or improvement idea? Feel free to fork and submit a pull request!
+✅ Multi-sheet Excel support  
+✅ Dynamic column type detection  
+✅ Amount & date format normalization  
+✅ Query & group cleaned data  
+✅ Clean modular code (`ExcelProcessor`, `DataTypeDetector`, `FormatParser`, `FinancialDataStore`)
 
 ---
 
 ## 📬 Contact
 
-Maintained by [Bilal Aslam](mailto:bilal.aslam.338658@gmail.com)  
-Feel free to reach out for collaboration or questions.
+Maintained by **Bilal Aslam**  
+📧 [bilal.aslam.338658@gmail.com](mailto:bilal.aslam.338658@gmail.com)  
+🌐 [github.com/bforbilal2003](https://github.com/bforbilal2003)
+
+---
+
+## 🤝 Contributing
+
+Feel free to fork, star, raise an issue, or submit a pull request.  
+This project is open to ideas for expanding:
+- More intelligent parsers
+- API-based financial enrichment
+- Database integrations (e.g., SQLite, PostgreSQL)
+
+---
+
+## 🏁 Final Words
+
+This repo is a complete demonstration of data engineering skills applied to unstructured financial Excel files — transforming messy, raw data into structured, queryable datasets.
+
+Built with ❤️ by Bilal Aslam.
