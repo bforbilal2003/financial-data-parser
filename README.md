@@ -1,23 +1,16 @@
-# 📊 Financial Data Parser – Complete Project (Phases 1 to 4)
+# 📊 Financial Data Parser & Excel Reconciliation Project (Phases 1 to 5)
 
-This is a complete 4-phase project that parses financial Excel files to extract, clean, classify, and store structured tabular data.
+This repository contains a complete 5-phase project: financial Excel parsing (Phases 1–4) and Excel sheet reconciliation & subset sum analysis (Phase 5).
 
-The project is modular, scalable, and supports:
-- 📁 Loading multi-sheet Excel files  
-- 🧠 Auto-detecting column types (dates, numbers, strings)  
-- 🔎 Parsing amounts and dates into clean formats  
-- 💾 Storing cleaned datasets for querying and aggregation
-
----
-
-## 🚦 Project Phases
+## Project Phases
 
 | Phase | Feature                                                  | Status |
 |-------|----------------------------------------------------------|--------|
 | 1     | Excel loading + metadata extraction                      | ✅ Done |
 | 2     | Data type detection (date, number, string, empty)        | ✅ Done |
-| 3     | Format parsing (amounts, Excel serials, Q1 2024, etc.)   | ✅ Done |
-| 4     | Storage & querying (range filter, grouping, aggregation) | ✅ Done |
+| 3     | Format parsing (amounts, Excel serials, Q1 2024, etc.)  | ✅ Done |
+| 4     | Storage & querying (range filter, grouping, aggregation)| ✅ Done |
+| 5     | Excel Sheet Reconciliation & Subset Sum Analysis        | ✅ Done |
 
 ---
 
@@ -25,19 +18,21 @@ The project is modular, scalable, and supports:
 
 ```
 financial-data-parser/
-├── data/
-│   └── sample/
-│       ├── KH_Bank.XLSX
-│       └── Customer_Ledger_Entries_FULL.xlsx
+├── data/sample/
+│ ├── KH_Bank.XLSX
+│ ├── Customer_Ledger_Entries_FULL.xlsx
+│ ├── Sheet1_Transactions.xlsx
+│ └── Sheet2_Targets.xlsx
 ├── scripts/
-│   └── main.py
-├── src/
-│   └── core/
-│       ├── __init__.py
-│       ├── excel_processor.py      # Phase 1
-│       ├── type_detector.py        # Phase 2
-│       ├── format_parser.py        # Phase 3
-│       └── data_storage.py         # Phase 4
+│ ├── main.py
+│ └── reconcile.py
+├── src/core/
+│ ├── init.py
+│ ├── excel_processor.py
+│ ├── type_detector.py
+│ ├── format_parser.py
+│ ├── data_storage.py
+│ └── sheet_reconciler.py
 ├── requirements.txt
 └── README.md
 ```
